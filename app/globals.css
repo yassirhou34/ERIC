@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
   --paper: #faf7f2;
@@ -2510,14 +2510,23 @@ html.intro-lock .maison-reveal {
     padding: 0;
     min-height: 100svh;
   }
+  /* Mobile only — desktop inchangé */
   .hero-copy {
-    width: min(92vw, 420px);
-    max-width: 420px;
+    width: 100%;
+    max-width: 100%;
     padding: 0 20px 72px;
   }
   .brand-hero,
-  .opener-hero .brand-hero {
-    font-size: clamp(42px, 14vw, 64px);
+  .opener-hero .brand-hero,
+  .opener-copy h1 {
+    font-size: clamp(30px, calc((100vw - 40px) / 7.6), 48px);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    max-width: 100%;
+  }
+  .hero-line {
+    max-width: 100%;
+    font-size: 15px;
   }
   .opener-3d {
     grid-template-columns: 1fr;
