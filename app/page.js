@@ -1,5 +1,5 @@
 import Link from "next/link";
-import WorldIntro from "@/components/WorldIntro";
+import ViewportMount from "@/components/ViewportMount";
 import { LandingEriccStage, LandingNaoStage } from "@/components/three/DynamicStages";
 
 const TEAM = [
@@ -13,11 +13,10 @@ const TEAM = [
 export default function HomePage() {
   return (
     <>
-      <WorldIntro />
-      <main className="maison maison-reveal">
+      <main className="maison">
         <section className="opener opener-hero">
           <div className="opener-stage-full">
-            <LandingEriccStage />
+            <LandingEriccStage hero />
           </div>
           <div className="hero-veil" aria-hidden />
           <div className="opener-copy hero-copy">
@@ -27,8 +26,8 @@ export default function HomePage() {
               <span>Robotique</span>
             </h1>
             <p className="hero-line">
-              Deux mondes. Une présence. Le laboratoire qui doit rester le meilleur projet de
-              l’année.
+              ERICC et NAO en 3D live — MGD, MGI, capteurs, prise-dépose. Un lab prêt pour
+              l’évaluation.
             </p>
             <div className="opener-actions">
               <a className="primary" href="#ericc">
@@ -141,7 +140,9 @@ export default function HomePage() {
             <p className="world-mark" aria-hidden>
               01
             </p>
-            <LandingEriccStage />
+            <ViewportMount minHeight={380} className="chapter-lazy">
+              <LandingEriccStage />
+            </ViewportMount>
           </div>
           <div className="chapter-body">
             <p className="index">MONDE 01</p>
@@ -167,7 +168,9 @@ export default function HomePage() {
             <p className="world-mark" aria-hidden>
               02
             </p>
-            <LandingNaoStage />
+            <ViewportMount minHeight={380} className="chapter-lazy">
+              <LandingNaoStage />
+            </ViewportMount>
           </div>
           <div className="chapter-body">
             <p className="index">MONDE 02</p>

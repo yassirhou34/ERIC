@@ -68,15 +68,28 @@ function MirrorFloor({ tint = "#f5f0e8" }) {
   );
 }
 
-export function LandingEriccStage() {
+export function LandingEriccStage({ hero = false } = {}) {
+  // Hero : bras décalé à droite pour ne pas passer sous le titre
+  const armPos = hero ? [0.55, -0.04, 0] : [0, -0.04, 0];
+  const floorPos = hero ? [0.55, 0, 0] : [0, 0, 0];
+  const cam = hero
+    ? { position: [1.15, 0.78, 1.65], fov: 36 }
+    : { position: [1.4, 0.82, 1.55], fov: 38 };
+  const lookY = hero ? 0.28 : 0.32;
+
   return (
-    <div className="stage-3d landing-stage">
-      <Canvas shadows camera={{ position: [1.4, 0.82, 1.55], fov: 38 }} dpr={[1, 2]}>
+    <div className={`stage-3d landing-stage${hero ? " landing-stage-hero" : ""}`}>
+      <Canvas
+        shadows
+        camera={cam}
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
+      >
         <color attach="background" args={["#faf7f2"]} />
         <fog attach="fog" args={["#faf7f2", 4.5, 11]} />
         <Suspense fallback={null}>
           <Lights />
-          <FrameTarget y={0.32} />
+          <FrameTarget y={lookY} />
           <PresentationControls
             global
             snap
@@ -86,14 +99,17 @@ export function LandingEriccStage() {
             azimuth={[-0.45, 0.45]}
           >
             <Float speed={1.2} rotationIntensity={0.05} floatIntensity={0.08}>
-              <group position={[0, -0.04, 0]} scale={1.05}>
-                <EriccArmModel q={{}} autoDemo breathe />
+              <group position={armPos} scale={hero ? 0.98 : 1.05}>
+                <EriccArmModel q={{ theta1: 0, theta2: 28, theta3: 28, theta4: 0, theta5: 50, grip: 20 }} autoDemo breathe />
               </group>
             </Float>
           </PresentationControls>
-          <MirrorFloor />
-          <Sparkles count={28} scale={2.4} size={1.5} speed={0.28} color="#c8102e" opacity={0.4} />
-          <ContactShadows position={[0, 0.002, 0]} opacity={0.4} scale={2.8} blur={2.6} />
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={floorPos} receiveShadow>
+            <circleGeometry args={[2.4, 48]} />
+            <meshStandardMaterial color="#f5f0e8" metalness={0.08} roughness={0.9} />
+          </mesh>
+          <Sparkles count={16} scale={2.2} size={1.4} speed={0.25} color="#c8102e" opacity={0.35} />
+          <ContactShadows position={[floorPos[0], 0.002, 0]} opacity={0.35} scale={2.8} blur={2.6} frames={1} />
           <Environment preset="city" />
         </Suspense>
       </Canvas>
@@ -108,7 +124,12 @@ export function LandingEriccStage() {
 export function LandingNaoStage() {
   return (
     <div className="stage-3d landing-stage nao">
-      <Canvas shadows camera={{ position: [1.45, 0.95, 1.75], fov: 38 }} dpr={[1, 2]}>
+      <Canvas
+        shadows
+        camera={{ position: [1.45, 0.95, 1.75], fov: 38 }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
+      >
         <color attach="background" args={["#f2f7f4"]} />
         <fog attach="fog" args={["#f2f7f4", 5, 12]} />
         <Suspense fallback={null}>
@@ -128,9 +149,12 @@ export function LandingNaoStage() {
               </group>
             </Float>
           </PresentationControls>
-          <MirrorFloor tint="#eef5f1" />
-          <Sparkles count={28} scale={2.6} size={1.5} speed={0.26} color="#004d3a" opacity={0.4} />
-          <ContactShadows position={[0, 0.002, 0]} opacity={0.38} scale={2.8} blur={2.5} />
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+            <circleGeometry args={[2.4, 48]} />
+            <meshStandardMaterial color="#eef5f1" metalness={0.06} roughness={0.92} />
+          </mesh>
+          <Sparkles count={14} scale={2.4} size={1.3} speed={0.22} color="#004d3a" opacity={0.32} />
+          <ContactShadows position={[0, 0.002, 0]} opacity={0.32} scale={2.8} blur={2.5} frames={1} />
           <Environment preset="warehouse" />
         </Suspense>
       </Canvas>

@@ -139,16 +139,52 @@ html.intro-lock body {
   to { width: 100%; }
 }
 
+/* Plus de délai fixe 4s (bug : page invisible si intro déjà vue / skip) */
 .maison-reveal {
-  animation: maisonReveal 0.8s ease 4s both;
+  opacity: 1;
 }
-@keyframes maisonReveal {
-  from { opacity: 0; }
-  to { opacity: 1; }
+html.intro-lock .maison-reveal {
+  /* l’intro fixe couvre déjà ; pas besoin de masquer la maison */
+  pointer-events: none;
+}
+
+.wi3d-fallback {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, #1a0a0a, #050505 70%);
+}
+.wi3d-skip {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 5;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.wi3d-skip:hover {
+  border-color: #e10600;
+  color: #ffb4a8;
+}
+.chapter-lazy {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+.chapter-lazy .stage-3d,
+.chapter-lazy .landing-stage {
+  height: 100%;
+  min-height: 380px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .maison-reveal { animation: none; }
   .world-intro-3d { display: none; }
 }
 
@@ -241,8 +277,9 @@ html.intro-lock body {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(250, 247, 242, 0.12) 0%, transparent 30%, rgba(250, 247, 242, 0.5) 64%, rgba(250, 247, 242, 0.97) 100%),
-    radial-gradient(ellipse 70% 55% at 72% 38%, rgba(225, 6, 0, 0.12), transparent 60%);
+    linear-gradient(90deg, rgba(250, 247, 242, 0.92) 0%, rgba(250, 247, 242, 0.55) 38%, transparent 58%),
+    linear-gradient(180deg, rgba(250, 247, 242, 0.12) 0%, transparent 30%, rgba(250, 247, 242, 0.45) 70%, rgba(250, 247, 242, 0.97) 100%),
+    radial-gradient(ellipse 55% 50% at 78% 42%, rgba(225, 6, 0, 0.1), transparent 62%);
   animation: veilPulse 6s ease-in-out infinite;
 }
 @keyframes veilPulse {
@@ -357,15 +394,19 @@ html.intro-lock body {
   z-index: 2;
   max-width: 780px;
   padding-bottom: 24px;
-  animation: copyIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 .hero-copy {
-  max-width: 720px;
+  width: min(46vw, 520px);
+  max-width: 520px;
   padding: 0 40px 88px;
   pointer-events: none;
 }
 .hero-copy a {
   pointer-events: auto;
+}
+.opener-hero .brand-hero {
+  font-size: clamp(48px, 8.5vw, 92px);
+  max-width: 100%;
 }
 .opener-copy .place {
   font-size: 11px;
@@ -424,15 +465,11 @@ html.intro-lock body {
   transform: translateY(-3px);
   box-shadow: 0 16px 40px rgba(225, 6, 0, 0.28);
 }
-.hero-copy .place {
-  animation: copyIn 1s cubic-bezier(0.16, 1, 0.3, 1) 3.5s both;
-}
-.hero-copy .brand-hero {
-  animation: copyIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) 3.62s both;
-}
+.hero-copy .place,
+.hero-copy .brand-hero,
 .hero-copy .hero-line,
 .hero-copy .opener-actions {
-  animation: copyIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) 3.74s both;
+  animation: none;
 }
 .opener-actions a.quiet {
   font-size: 12px;
@@ -2474,10 +2511,13 @@ html.intro-lock body {
     min-height: 100svh;
   }
   .hero-copy {
+    width: min(92vw, 420px);
+    max-width: 420px;
     padding: 0 20px 72px;
   }
-  .brand-hero {
-    font-size: clamp(48px, 16vw, 72px);
+  .brand-hero,
+  .opener-hero .brand-hero {
+    font-size: clamp(42px, 14vw, 64px);
   }
   .opener-3d {
     grid-template-columns: 1fr;
